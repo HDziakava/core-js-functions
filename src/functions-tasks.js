@@ -141,12 +141,16 @@ function memoize(func) {
  */
 function retry(func, attempts) {
   return () => {
-    let count = attempts;
+    let count = 0;
 
-    while (count > 0) {
-      func();
-      count -= 1;
+    while (count !== attempts) {
+      try {
+        return func();
+      } catch {
+        count += 1;
+      }
     }
+    return '';
   };
 }
 
